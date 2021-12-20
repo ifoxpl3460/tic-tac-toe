@@ -1,50 +1,43 @@
 #include "Tile.h"
 #include <iostream>
 
-void Setup (Tile* tiles);
-void HandleInput (sf::Event* evnt, Tile* tiles, int* t, sf::RenderWindow* win);
-void ActiveTiles (Tile* tiles, int* t);
+void Setup (Tile*);
+void RenderTiles (Tile*, sf::RenderWindow*);
+void HandleInput (sf::Event*, Tile*, int*, sf::RenderWindow*);
+void ActiveTiles (Tile*, int*);
 
 int main () {
+	int t = 0;
+
 	// sfml stuff
 	sf::RenderWindow* win = new sf::RenderWindow (sf::VideoMode (302, 302), "tic-tac-toe");
 	sf::Event* evnt = new sf::Event;
 
-	sf::Texture xt;
-
-	if (!xt.loadFromFile ("x.png")) {
-		std::cout << "can't load texture\n";
-	}
-	
-
-	sf::Sprite x (xt);
-
 	// temporary tab (vector?)
 	Tile* tiles = new Tile[9];
-
-	int t = 0;
 
 	Setup (tiles);
 
 	// main loop
 	while (win->isOpen ()) {
-		while (win->pollEvent (*evnt)) {
-			HandleInput (evnt, tiles, &t, win);
-		}
+		while (win->pollEvent (*evnt)) HandleInput (evnt, tiles, &t, win);
+
 		win->clear ();
-
 		ActiveTiles (tiles, &t);
-
-		for (int i = 0; i < 9; i++) {
-			if (tiles[i].active == 1) {
-				tiles[i].tile.setFillColor (sf::Color::Green);
-			}
-			else tiles[i].tile.setFillColor (sf::Color::White);
-			win->draw (tiles[i].tile);
-		}
+		RenderTiles (tiles, win);		
 		win->display ();
 	}
 	return 0;
+}
+
+void RenderTiles (Tile * tiles, sf::RenderWindow * win) {
+	for (int i = 0; i < 9; i++) {
+		if (tiles[i].active == 1) {
+			tiles[i].tile.setFillColor (sf::Color::Green);
+		}
+		else tiles[i].tile.setFillColor (sf::Color::White);
+		win->draw (tiles[i].tile);
+	}
 }
 
 void Setup (Tile* tiles) {
@@ -60,7 +53,7 @@ void Setup (Tile* tiles) {
 	}
 }
 
-// Temp
+// activating tiles
 void ActiveTiles (Tile* tiles, int* t) {
 	for (int i = 0; i < 9; i++) {
 		if (*t == i) {
@@ -103,7 +96,7 @@ void HandleInput (sf::Event* evnt, Tile* tiles, int* t, sf::RenderWindow* win) {
 				*t += 3;
 				tiles[k].active = 0;
 			}
-			break;		
-		}
+			break;	
+		}	
 	}
 }

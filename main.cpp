@@ -1,15 +1,15 @@
 #include "Tile.h"
 
-void Setup (Tile * tiles);
-void HandleInput (sf::Event * evnt, Tile * tiles, int* t);
+void Setup (Tile* tiles);
+void HandleInput (sf::Event* evnt, Tile* tiles, int* t, sf::RenderWindow* win);
 void ActiveTiles (Tile* tiles, int* t);
 
 int main () {
 	// sfml stuff
-	sf::RenderWindow* win = new sf::RenderWindow (sf::VideoMode (301, 301), "tic-tac-toe");
+	sf::RenderWindow* win = new sf::RenderWindow (sf::VideoMode (302, 302), "tic-tac-toe");
 	sf::Event* evnt = new sf::Event;
 
-	// temporary tab
+	// temporary tab (vector?)
 	Tile* tiles = new Tile[9];
 
 	int t = 0;
@@ -18,10 +18,8 @@ int main () {
 
 	// main loop
 	while (win->isOpen ()) {
-
 		while (win->pollEvent (*evnt)) {
-			if (evnt->type == sf::Event::Closed) win->close ();
-			HandleInput (evnt, tiles, &t);
+			HandleInput (evnt, tiles, &t, win);
 		}
 		win->clear ();
 
@@ -31,14 +29,17 @@ int main () {
 			if (tiles[i].active == 1) {
 				tiles[i].tile.setFillColor (sf::Color::Green);
 			}
+			else {
+				tiles[i].tile.setFillColor (sf::Color::White);
+			}
 			win->draw (tiles[i].tile);
-		}	
+		}
 		win->display ();
 	}
 	return 0;
 }
 
-void Setup (Tile * tiles) {
+void Setup (Tile* tiles) {
 	int n = 1, m = 1;
 	// setting up position for each tile
 	for (int i = 1; i < 10; i++) {
@@ -51,65 +52,50 @@ void Setup (Tile * tiles) {
 	}
 }
 
-
 // Temp
-void ActiveTiles (Tile * tiles, int * t) {
-	if (*t == 0){
-		tiles[0].Active ();
-	}
-	if (*t == 1) {
-		tiles[1].Active ();
-	}
-	if (*t == 2) {
-		tiles[2].Active ();
-	}
-	if (*t == 3) {
-		tiles[3].Active ();
-	}
-	if (*t == 4) {
-		tiles[4].Active ();
-	}
-	if (*t == 5) {
-		tiles[5].Active ();
-	}
-	if (*t == 6) {
-		tiles[6].Active ();
-	}
-	if (*t == 7) {
-		tiles[7].Active ();
-	}
-	if (*t == 8) {
-		tiles[8].Active ();
+void ActiveTiles (Tile* tiles, int* t) {
+	for (int i = 0; i < 9; i++) {
+		if (*t == i) {
+			tiles[i].active = 1;
+		}
 	}
 }
 
-// Temp
-void HandleInput (sf::Event* evnt, Tile * tiles, int * t) {
+// handling user input
+void HandleInput (sf::Event* evnt, Tile* tiles, int* t, sf::RenderWindow* win) {
 
+	int k = *t;
+
+	// closing program
+	if (evnt->type == sf::Event::Closed) win->close ();
+
+	// controls
 	if (evnt->type == sf::Event::EventType::KeyPressed) {
-		if (*t != 0) {
-			if (evnt->key.code == sf::Keyboard::Left) {
+		switch (evnt->key.code) {
+		case sf::Keyboard::Left:
+			if (*t != 0) {
 				*t -= 1;
+				tiles[k].active = 0;
 			}
-		}
-
-		if (*t != 8) {
-			if (evnt->key.code == sf::Keyboard::Right) {
+			break;
+		case sf::Keyboard::Right:
+			if (*t != 8) {
 				*t += 1;
+				tiles[k].active = 0;
 			}
-		}
-
-		if (*t != 0 && *t != 1 && *t != 2) {
-			if (evnt->key.code == sf::Keyboard::Up) {
+		break;
+		case sf::Keyboard::Up:
+			if (*t != 0 && *t != 1 && *t != 2) {
 				*t -= 3;
+				tiles[k].active = 0;
 			}
-		}
-
-		if (*t != 6 && *t != 7 && *t != 8) {
-			if (evnt->key.code == sf::Keyboard::Down) {
+		break;
+		case sf::Keyboard::Down:
+			if (*t != 6 && *t != 7 && *t != 8) {
 				*t += 3;
+				tiles[k].active = 0;
 			}
-
+			break;		
 		}
 	}
 }

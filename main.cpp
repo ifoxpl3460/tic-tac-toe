@@ -29,9 +29,7 @@ int main () {
 			if (tiles[i].active == 1) {
 				tiles[i].tile.setFillColor (sf::Color::Green);
 			}
-			else {
-				tiles[i].tile.setFillColor (sf::Color::White);
-			}
+			else tiles[i].tile.setFillColor (sf::Color::White);
 			win->draw (tiles[i].tile);
 		}
 		win->display ();

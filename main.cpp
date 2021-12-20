@@ -1,4 +1,5 @@
 #include "Tile.h"
+#include <iostream>
 
 void Setup (Tile* tiles);
 void HandleInput (sf::Event* evnt, Tile* tiles, int* t, sf::RenderWindow* win);
@@ -8,6 +9,15 @@ int main () {
 	// sfml stuff
 	sf::RenderWindow* win = new sf::RenderWindow (sf::VideoMode (302, 302), "tic-tac-toe");
 	sf::Event* evnt = new sf::Event;
+
+	sf::Texture xt;
+
+	if (!xt.loadFromFile ("x.png")) {
+		std::cout << "can't load texture\n";
+	}
+	
+
+	sf::Sprite x (xt);
 
 	// temporary tab (vector?)
 	Tile* tiles = new Tile[9];

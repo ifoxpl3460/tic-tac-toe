@@ -11,4 +11,4 @@ Tile::Tile () {
 
 void Tile::SetPosition (float x, float y) {
 	tile.setPosition (x, y);
-}W
+}

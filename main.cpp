@@ -4,7 +4,9 @@
 class Tile {
 private:
 	sf::Vector2f size;
+	
 public:
+	bool active = 0;
 	sf::RectangleShape tile;
 	Tile () {
 		size = sf::Vector2f (100.f, 100.f);
@@ -16,6 +18,9 @@ public:
 	void SetPosition (float x, float y) {
 		tile.setPosition (x, y);
 	}
+	void Active () {
+		active = !active;
+	}
 };
 
 int main () {
@@ -25,6 +30,8 @@ int main () {
 
 	// temporary tab
 	Tile tiles[9];
+
+	tiles[0].active = 1;
 
 	int n = 1, m = 1;
 
@@ -40,12 +47,16 @@ int main () {
 
 	// main loop
 	while (win->isOpen ()) {
+
 		while (win->pollEvent (*evnt)) {
 			if (evnt->type == sf::Event::Closed) win->close ();
 		}
 		win->clear ();
 
 		for (int i = 0; i < 9; i++) {
+			if (tiles[i].active == 1) {
+				tiles[i].tile.setFillColor (sf::Color::Green);
+			}
 			win->draw (tiles[i].tile);
 		}	
 		win->display ();

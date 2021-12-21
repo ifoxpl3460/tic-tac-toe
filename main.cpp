@@ -7,7 +7,7 @@ void HandleInput (sf::Event*, Tile*, int*, sf::RenderWindow*);
 void ActiveTiles (Tile*, int*);
 
 int main () {
-	int t = 0;
+	int pos = 0;
 
 	// sfml stuff
 	sf::RenderWindow* win = new sf::RenderWindow (sf::VideoMode (302, 302), "tic-tac-toe");
@@ -20,10 +20,10 @@ int main () {
 
 	// main loop
 	while (win->isOpen ()) {
-		while (win->pollEvent (*evnt)) HandleInput (evnt, tiles, &t, win);
+		while (win->pollEvent (*evnt)) HandleInput (evnt, tiles, &pos, win);
 
 		win->clear ();
-		ActiveTiles (tiles, &t);
+		ActiveTiles (tiles, &pos);
 		RenderTiles (tiles, win);		
 		win->display ();
 	}
@@ -33,10 +33,10 @@ int main () {
 void RenderTiles (Tile * tiles, sf::RenderWindow * win) {
 	for (int i = 0; i < 9; i++) {
 		if (tiles[i].active == 1) {
-			tiles[i].tile.setFillColor (sf::Color::Green);
+			tiles[i].tile->setFillColor (sf::Color::Green);
 		}
-		else tiles[i].tile.setFillColor (sf::Color::White);
-		win->draw (tiles[i].tile);
+		else tiles[i].tile->setFillColor (sf::Color::White);
+		win->draw (*tiles[i].tile);
 	}
 }
 
